@@ -29,7 +29,6 @@ export interface IAuthInitialState {
 
 export enum AuthType {
   LOGIN = "login",
-  REGISTER = "register",
 }
 
 export interface ILogin {

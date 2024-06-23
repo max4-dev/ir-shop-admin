@@ -1,11 +1,18 @@
-import { Admin, ListGuesser, Resource } from "react-admin";
-import "./App.css";
-import { dataProvider } from "./providers/dataProvider";
+import { Admin, Resource } from "react-admin";
+import { ProductEdit, ProductList } from "./components/layouts";
+import { authProvider, dataProvider } from "./providers";
+import "./scss/style.scss";
+import { LoginPage } from "./pages";
 
 function App() {
   return (
-    <Admin dataProvider={dataProvider}>
-      <Resource name="products" list={ListGuesser} />
+    <Admin
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+      loginPage={LoginPage}
+      requireAuth
+    >
+      <Resource name="products" list={ProductList} edit={ProductEdit} />
     </Admin>
   );
 }
