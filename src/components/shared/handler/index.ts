@@ -5,13 +5,17 @@ import { AuthType, IAuthResponse, ILogin, IUser, Tokens } from "../../../redux/a
 import { saveToStorage } from "../api/lib/interceptor/AuthHelper";
 
 import axios from "../../../core/axios";
+import { API_URL } from "../api/const/ApiUrl";
 
 export const getNewTokens = async () => {
   const refreshToken = Cookies.get(Tokens.REFRESH);
 
-  const response = await axios.post<string, { data: IAuthResponse }>("/auth/login/access-token", {
-    refreshToken,
-  });
+  const response = await axios.post<string, { data: IAuthResponse }>(
+    `${API_URL}/auth/login/access-token`,
+    {
+      refreshToken,
+    }
+  );
 
   if (response.data.accessToken) {
     saveToStorage(response.data);
@@ -20,8 +24,8 @@ export const getNewTokens = async () => {
   return response;
 };
 
-export const sign = async (type: AuthType.LOGIN | AuthType.REGISTER, data: ILogin) => {
-  const response = await axios.post<IAuthResponse>(`/auth/${type}`, data);
+export const sign = async (type: AuthType.LOGIN, data: ILogin) => {
+  const response = await axios.post<IAuthResponse>(`${API_URL}/auth/${type}`, data);
 
   if (response.data.accessToken) {
     saveToStorage(response.data);
@@ -31,7 +35,7 @@ export const sign = async (type: AuthType.LOGIN | AuthType.REGISTER, data: ILogi
 };
 
 export const profileRequest = async () => {
-  const response = await axios.get<IUser>(`/users/profile`);
+  const response = await axios.get<IUser>(`${API_URL}/users/profile`);
 
   return response;
 };

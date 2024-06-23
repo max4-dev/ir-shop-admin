@@ -1,0 +1,27 @@
+.login {
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  &Form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    max-width: 400px;
+    width: 100%;
+    padding: 40px;
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+  &Input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  &Button {
+    width: 100%;
+  }
+}
