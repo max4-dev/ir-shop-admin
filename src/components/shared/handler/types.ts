@@ -3,3 +3,7 @@ export interface IUpdateRequest {
   password?: string;
   name?: string;
 }
+
+export enum Roles {
+  ADMIN = "ADMIN",
+}

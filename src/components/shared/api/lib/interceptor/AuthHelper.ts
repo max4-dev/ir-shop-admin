@@ -1,5 +1,6 @@
-import Cookies from "js-cookie";
 import axios from "axios";
+import Cookies from "js-cookie";
+
 import { API_URL } from "../../const/ApiUrl";
 import { IAuthResponse, ITokens, Tokens } from "../../../../../redux/auth/types";
 
@@ -13,7 +14,7 @@ export const getRefreshToken = () => {
   return refreshToken || null;
 };
 
-export const getUserFromStorage = async () => {
+export const getUserFromStorage = () => {
   return JSON.parse(localStorage.getItem("user") || "{}");
 };
 

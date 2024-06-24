@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 
 import { AuthType, IAuthResponse, ILogin, IUser, Tokens } from "../../../redux/auth/types";
-
-import { saveToStorage } from "../api/lib/interceptor/AuthHelper";
-
-import axios from "../../../core/axios";
 import { API_URL } from "../api/const/ApiUrl";
+import { saveToStorage } from "../api/lib/interceptor/AuthHelper";
+import axios from "../../../core/axios";
+
+import { Roles } from "./types";
 
 export const getNewTokens = async () => {
   const refreshToken = Cookies.get(Tokens.REFRESH);
@@ -17,6 +17,10 @@ export const getNewTokens = async () => {
     }
   );
 
+  if (response.data.user && response.data.user.role !== Roles.ADMIN) {
+    throw new Error("Доступ закрыт");
+  }
+
   if (response.data.accessToken) {
     saveToStorage(response.data);
   }
@@ -26,6 +30,10 @@ export const getNewTokens = async () => {
 
 export const sign = async (type: AuthType.LOGIN, data: ILogin) => {
   const response = await axios.post<IAuthResponse>(`${API_URL}/auth/${type}`, data);
+
+  if (response.data.user && response.data.user.role !== Roles.ADMIN) {
+    throw new Error("Доступ закрыт");
+  }
 
   if (response.data.accessToken) {
     saveToStorage(response.data);
@@ -38,4 +46,10 @@ export const profileRequest = async () => {
   const response = await axios.get<IUser>(`${API_URL}/users/profile`);
 
   return response;
+};
+
+export const checkIsAdmin = async () => {
+  const response = await axios.get<string>(`${API_URL}/users/role`);
+
+  return response.data === Roles.ADMIN;
 };

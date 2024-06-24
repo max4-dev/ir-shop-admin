@@ -3,7 +3,6 @@ import { BooleanInput, Edit, NumberInput, SimpleForm, TextInput } from "react-ad
 export const ProductEdit = () => (
   <Edit>
     <SimpleForm>
-      <TextInput source="id" />
       <TextInput source="title" />
       <NumberInput source="salePercent" />
       <TextInput source="description" />
