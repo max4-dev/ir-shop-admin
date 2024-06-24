@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+
 import { ITokens } from "../../../../../redux/auth/types";
 
 export type AxiosInterceptorProps = {

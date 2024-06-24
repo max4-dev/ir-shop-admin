@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { ITokens } from "../../../../../redux/auth/types";
+import { API_URL } from "../../const/ApiUrl";
 
 export const handleRefreshToken = async (
   oldRefreshToken: string | null
@@ -12,12 +13,9 @@ export const handleRefreshToken = async (
   try {
     const {
       data: { accessToken, refreshToken },
-    }: { data: ITokens } = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/login/access-token`,
-      {
-        refreshToken: oldRefreshToken,
-      }
-    );
+    }: { data: ITokens } = await axios.post(`${API_URL}/auth/login/access-token`, {
+      refreshToken: oldRefreshToken,
+    });
 
     return [accessToken, refreshToken];
   } catch (error) {

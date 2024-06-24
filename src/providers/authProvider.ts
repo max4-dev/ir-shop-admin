@@ -1,10 +1,8 @@
 import { AuthProvider } from "react-admin";
-import { sign } from "../components/shared/handler";
+
+import { checkIsAdmin, sign } from "../components/shared/handler";
 import { AuthType } from "../redux/auth/types";
-import {
-  getAccessToken,
-  removeTokenStorage,
-} from "../components/shared/api/lib/interceptor/AuthHelper";
+import { removeTokenStorage } from "../components/shared/api/lib/interceptor/AuthHelper";
 
 export const authProvider: AuthProvider = {
   login: async (data) => {
@@ -22,8 +20,9 @@ export const authProvider: AuthProvider = {
     }
     return Promise.resolve();
   },
-  checkAuth: () => {
-    return getAccessToken() ? Promise.resolve() : Promise.reject();
+  checkAuth: async () => {
+    const isAdmin = await checkIsAdmin();
+    return isAdmin ? Promise.resolve() : Promise.reject();
   },
   getPermissions: () => Promise.resolve(),
 };

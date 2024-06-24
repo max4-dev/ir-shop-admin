@@ -1,10 +1,10 @@
 import { InternalAxiosRequestConfig } from "axios";
 
 import { HttpCodes } from "../../const/ErrorsHttp";
+import { notify } from "../../../../../helpers/toastMessage";
 
 import { handleRefreshToken } from "./HandleRefreshToken";
 import { AxiosInterceptorProps } from "./AxiosInterceptor.props";
-import { notify } from "../../../../../helpers/toastMessage";
 
 export const axiosInterceptor = (props: AxiosInterceptorProps) => {
   const {
@@ -62,6 +62,9 @@ export const axiosInterceptor = (props: AxiosInterceptorProps) => {
           return Promise.reject(error);
         }
       } else if (error.response && error.response.status === HttpCodes.UserNotFound) {
+        removeTokenStorage();
+        return Promise.reject(error);
+      } else if (error.response && error.response.status === HttpCodes.Forbidden) {
         removeTokenStorage();
         return Promise.reject(error);
       } else {
