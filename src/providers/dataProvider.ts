@@ -1,22 +1,49 @@
-import { DataProvider } from "react-admin";
+import { DataProvider, SORT_DESC } from "react-admin";
 
 import axiosInstance from "../core/axios";
 import { API_URL } from "../components/shared/api/const/ApiUrl";
+import { formatDataOne } from "../helpers/formatDataOne";
+import { sliceProducts } from "../helpers/sliceProduct";
+import {
+  filterProductsByCategories,
+  filterProductsByTitle,
+  sortProducts,
+} from "../components/entities/product/model";
 
-interface IData {
-  _id: string;
-  id: string;
-  __v: string;
-  createdAt: string;
-  updatedAt: string;
-  slug: string;
-}
+import { IData, LIST_ENUM } from "./types";
 
 export const dataProvider: DataProvider = {
   getList: async (resource, params) => {
     const { data } = await axiosInstance.get(`${API_URL}/${resource}`);
 
-    return { data, total: data.length ?? 0 };
+    let response = data;
+
+    if (resource !== LIST_ENUM.PRODUCTS) {
+      return { data: response, total: data.length ?? 0 };
+    }
+
+    response = filterProductsByTitle({ products: response, title: params.filter.title });
+
+    response = filterProductsByCategories({
+      products: response,
+      category: params.filter.category,
+    });
+
+    response = sortProducts({ products: response, sort: params.sort });
+
+    if (params.sort.order && params.sort.order === SORT_DESC) {
+      response = response.reverse();
+    }
+
+    const pages = response.length;
+
+    response = sliceProducts({
+      products: response,
+      page: params.pagination.page,
+      perPage: params.pagination.perPage,
+    });
+
+    return { data: response, total: pages ?? 0 };
   },
   getOne: async (resource, params) => {
     const { data } = await axiosInstance.get(`${API_URL}/${resource}/${params.id}`);
@@ -42,13 +69,19 @@ export const dataProvider: DataProvider = {
     console.log(resource, params);
   },
   create: async (resource, params) => {
-    console.log(resource, params);
-    // const { data } = await axiosInstance.delete(`${API_URL}/${resource}}`);
+    const { data } = await axiosInstance.post(`${API_URL}/${resource}`, params.data);
+
+    return { data };
   },
   update: async (resource, params) => {
-    const { data } = await axiosInstance.put(`${API_URL}/${resource}/${params.id}`, params.data);
+    const formatDataRequest = formatDataOne(params.data as IData);
 
-    return { data, total: data.length ?? 0 };
+    const { data } = await axiosInstance.put(
+      `${API_URL}/${resource}/${params.id}`,
+      formatDataRequest
+    );
+
+    return { data };
   },
   updateMany: (resource, params) => {
     console.log(resource, params);
@@ -58,7 +91,11 @@ export const dataProvider: DataProvider = {
 
     return { data, total: data.length ?? 0 };
   },
-  deleteMany: (resource, params) => {
-    console.log(resource, params);
+  deleteMany: async (resource, params) => {
+    const { data } = await axiosInstance.delete(`${API_URL}/${resource}/delete-many/`, {
+      data: { ids: params.ids },
+    });
+
+    return { data: data.products };
   },
 };

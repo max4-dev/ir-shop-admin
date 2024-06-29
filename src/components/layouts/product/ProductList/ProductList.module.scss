@@ -1,0 +1,15 @@
+.productList {
+  display: grid !important;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+
+  &Table {
+    max-width: 100%;
+    width: 100%;
+    flex: auto;
+  }
+}
+
+.aside {
+  width: 100%;
+}
