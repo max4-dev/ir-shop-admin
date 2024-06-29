@@ -13,6 +13,7 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import auth from "./auth/slice";
+import category from "./category/slice";
 
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -24,6 +25,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: auth,
+  category,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

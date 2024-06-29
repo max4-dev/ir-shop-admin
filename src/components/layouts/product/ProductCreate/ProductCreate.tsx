@@ -1,7 +1,7 @@
-import { BooleanInput, Edit, NumberInput, SimpleForm, TextInput } from "react-admin";
+import { BooleanInput, Create, NumberInput, SimpleForm, TextInput } from "react-admin";
 
-export const ProductEdit = () => (
-  <Edit>
+export const ProductCreate = () => (
+  <Create>
     <SimpleForm>
       <TextInput source="title" label="Название" />
       <NumberInput source="salePercent" label="Скидка в процентах" />
@@ -11,5 +11,5 @@ export const ProductEdit = () => (
       <NumberInput source="price" label="Цена" />
       <BooleanInput source="inStock" label="В наличии" />
     </SimpleForm>
-  </Edit>
+  </Create>
 );

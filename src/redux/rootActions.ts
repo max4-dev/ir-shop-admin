@@ -1,1 +1,5 @@
-export const rootActions = {};
+import * as categoryActions from "./category/asyncActions";
+
+export const rootActions = {
+  ...categoryActions,
+};
