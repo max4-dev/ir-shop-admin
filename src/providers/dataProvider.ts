@@ -65,9 +65,6 @@ export const dataProvider: DataProvider = {
 
     return { data: items, total: data.length ?? 0 };
   },
-  getManyReference: (resource, params) => {
-    console.log(resource, params);
-  },
   create: async (resource, params) => {
     const { data } = await axiosInstance.post(`${API_URL}/${resource}`, params.data);
 
