@@ -2,7 +2,7 @@ import { DataProvider, SORT_DESC } from "react-admin";
 
 import axiosInstance from "../core/axios";
 import { API_URL } from "../components/shared/api/const/ApiUrl";
-import { formatDataOne } from "../helpers/formatDataOne";
+import { defaultDataValues, formatDataOne } from "../helpers/formatDataOne";
 import { sliceProducts } from "../helpers/sliceProduct";
 import {
   filterProductsByCategories,
@@ -74,7 +74,12 @@ export const dataProvider: DataProvider = {
     return { data };
   },
   update: async (resource, params) => {
-    const formatDataRequest = formatDataOne(params.data as IData);
+    const formatDataRequest = formatDataOne(
+      params.data as IData,
+      "priceWithSale",
+      ...defaultDataValues
+    );
+    console.log(params);
 
     const { data } = await axiosInstance.put(
       `${API_URL}/${resource}/${params.id}`,
