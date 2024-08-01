@@ -1,3 +1,5 @@
+import { IOrder } from "../order/types";
+
 export enum Tokens {
   ACCESS = "accessToken",
   REFRESH = "refreshToken",
@@ -13,6 +15,7 @@ export type IUser = {
   name: string;
   phone: string;
   role: string;
+  orders: IOrder[];
 } | null;
 
 export interface IAuthResponse extends ITokens {
