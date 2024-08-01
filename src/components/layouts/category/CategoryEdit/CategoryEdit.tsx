@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 
 import { defaultDataValues, formatDataOne } from "../../../../helpers/formatDataOne";
 
+import styles from "./CategoryEdit.module.scss";
+
 export const CategoryEdit = () => {
   const [formattedCategories, setFormattedCategories] = useState<unknown[]>([]);
-  const { data, isPending } = useGetList("category");
+  const { data } = useGetList("category");
 
   useEffect(() => {
     const formatted = data
@@ -26,6 +28,7 @@ export const CategoryEdit = () => {
       <SimpleForm>
         <TextInput source="name" label="Категория" />
         <SelectInput
+          className={styles.selectInput}
           source="parent"
           choices={formattedCategories}
           label="Родительская категория (если нет, то сам становится родителем)"

@@ -22,6 +22,7 @@ export interface IProduct extends IData {
   inStock: boolean;
   rating: number;
   priceWithSale: number;
+  count?: number;
 }
 
 export interface ISort {

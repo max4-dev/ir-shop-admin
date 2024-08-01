@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
 
 import auth from "./auth/slice";
 import category from "./category/slice";
+import order from "./order/slice";
 
 import type { TypedUseSelectorHook } from "react-redux";
 
@@ -26,6 +27,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: auth,
   category,
+  order,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

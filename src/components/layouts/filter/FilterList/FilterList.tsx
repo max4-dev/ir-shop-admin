@@ -20,10 +20,10 @@ export const ProductFilter = ({ className }: { className: string }) => {
     fetchCategories();
   }, [getGategories]);
 
-  const buildSecondLevel = (parentSlug: string) =>
+  const buildSecondLevel = (parentId: string) =>
     categories &&
     categories.map((category) => {
-      if (parentSlug !== category.parent) {
+      if (parentId !== category.parent) {
         return null;
       }
 
@@ -45,7 +45,7 @@ export const ProductFilter = ({ className }: { className: string }) => {
       return (
         <div className={styles.firstLevel} key={category.id}>
           <span className={styles.firstTitle}>{category.name}</span>
-          {buildSecondLevel(category.slug)}
+          {buildSecondLevel(category.id)}
         </div>
       );
     });
