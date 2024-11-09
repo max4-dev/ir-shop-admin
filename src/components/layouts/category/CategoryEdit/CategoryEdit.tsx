@@ -1,27 +1,11 @@
-import { Edit, SelectInput, SimpleForm, TextInput, useGetList } from "react-admin";
-import { useEffect, useState } from "react";
+import { Edit, SelectInput, SimpleForm, TextInput } from "react-admin";
 
-import { defaultDataValues, formatDataOne } from "../../../../helpers/formatDataOne";
+import { useParentCategories } from "../../../../hooks/useParentCategories";
 
 import styles from "./CategoryEdit.module.scss";
 
 export const CategoryEdit = () => {
-  const [formattedCategories, setFormattedCategories] = useState<unknown[]>([]);
-  const { data } = useGetList("category");
-
-  useEffect(() => {
-    const formatted = data
-      ? data
-          .map((category) => {
-            if (category.parent) {
-              return null;
-            }
-            return formatDataOne(category, ...defaultDataValues);
-          })
-          .filter(Boolean)
-      : [];
-    setFormattedCategories(formatted);
-  }, [data]);
+  const { formattedParentCategories } = useParentCategories();
 
   return (
     <Edit>
@@ -30,7 +14,7 @@ export const CategoryEdit = () => {
         <SelectInput
           className={styles.selectInput}
           source="parent"
-          choices={formattedCategories}
+          choices={formattedParentCategories}
           label="Родительская категория (если нет, то сам становится родителем)"
         />
       </SimpleForm>

@@ -16,7 +16,7 @@ const formattedStatuses = [
 
 export const OrderEdit = () => {
   const findProductById = (products: IProduct[]) => {
-    return products.map((product: IProduct) => <Product {...product} />);
+    return products.map((product: IProduct) => <Product key={product.id} {...product} />);
   };
 
   return (

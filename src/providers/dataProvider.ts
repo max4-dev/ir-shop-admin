@@ -1,4 +1,4 @@
-import { CreateParams, DataProvider, SORT_DESC, UpdateParams } from "react-admin";
+import { DataProvider, SORT_DESC } from "react-admin";
 
 import axiosInstance from "../core/axios";
 import { API_URL } from "../components/shared/api/const/ApiUrl";
@@ -16,15 +16,6 @@ import { IData, LIST_ENUM } from "./types";
 export enum URL_CONSTANTS {
   uploadFile = "files/upload-image",
 }
-
-const createProductFormData = (params: CreateParams<IProduct> | UpdateParams<IProduct>) => {
-  const formData = new FormData();
-  if (params.data[URL_CONSTANTS.uploadFile]?.rawFile) {
-    formData.append("files", params.data[URL_CONSTANTS.uploadFile].rawFile);
-  }
-
-  return formData;
-};
 
 export const dataProvider: DataProvider = {
   getList: async (resource, params) => {
@@ -83,18 +74,6 @@ export const dataProvider: DataProvider = {
     console.log(resource, params);
   },
   create: async (resource, params) => {
-    console.log(params);
-    if (params.data[URL_CONSTANTS.uploadFile]) {
-      const formData = createProductFormData(params);
-      const image = await axiosInstance({
-        method: "post",
-        url: `${API_URL}/${URL_CONSTANTS.uploadFile}?folder=images`,
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log(image);
-    }
-
     const { data } = await axiosInstance.post(`${API_URL}/${resource}`, params.data);
 
     return { data };
@@ -140,8 +119,5 @@ export const dataProvider: DataProvider = {
     });
 
     return { data: data.products };
-  },
-  beforeUpdate: async (params, dataProvider: DataProvider) => {
-    console.log(params, dataProvider);
   },
 };
